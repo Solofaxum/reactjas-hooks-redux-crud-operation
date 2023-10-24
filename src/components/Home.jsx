@@ -1,13 +1,22 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import "bootstrap/dist/css/bootstrap.css";
+import { Link } from "react-router-dom";
+import { deleteUser } from "./UserReducer";
 
 function Home() {
   const users = useSelector((state) => state.users);
-  console.log(`this is data from users : ${JSON.stringify(users)}`);
+  const dispatch = useDispatch();
+  //   const navigagte = useNavigate()
+  //console.log(`this is data from users : ${JSON.stringify(users)}`);
+  const handleDelete = (id) => {
+    dispatch(deleteUser({ id: id }));
+  };
   return (
     <div className="container">
-      <button className="btn btn-success my-3">Create New login</button>
+      <Link to="/create" className="btn btn-success my-3">
+        Create New login
+      </Link>
       <table className="table">
         <thead>
           <tr>
@@ -24,9 +33,19 @@ function Home() {
               <td>{user.name}</td>
               <td>{user.email}</td>
               <td>
-                <button className="btn btn-sm btn-primary">Edit</button>
-                <button className="btn btn-sm btn-danger ms-2" type="button">Delete</button>
-
+                <Link
+                  to={`/edit/${user.id}`}
+                  className="btn btn-sm btn-primary"
+                >
+                  Edit
+                </Link>
+                <button
+                  onClick={() => handleDelete(user.id)}
+                  className="btn btn-sm btn-danger ms-2"
+                  type="button"
+                >
+                  Delete
+                </button>
               </td>
             </tr>
           ))}
